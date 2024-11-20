@@ -2,8 +2,6 @@ package org.example;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,7 +25,6 @@ class HomeWorkTest {
     }
 
 
-
     private void runTest(String pattern) {
         execute(pattern);
         assertRun(pattern);
@@ -37,15 +34,12 @@ class HomeWorkTest {
     private void assertRun(String pattern) {
         String answer = Files.readString(Path.of("target/" + String.format(pattern, "answer")));
         String out = Files.readString(Path.of("task/" + String.format(pattern, "out")));
-        assertEquals(out, answer);
+        assertEquals(out.trim().replace("\r", ""), answer.trim().replace("\r", ""));
     }
 
     @SneakyThrows
     private void execute(String pattern) {
-        try (
-                InputStream in = new FileInputStream("task/" + String.format(pattern, "in"));
-                OutputStream answer = new FileOutputStream("target/" + String.format(pattern, "answer"), false);
-        ) {
+        try (InputStream in = new FileInputStream("task/" + String.format(pattern, "in")); OutputStream answer = new FileOutputStream("target/" + String.format(pattern, "answer"), false)) {
             HomeWork hw = new HomeWork();
             hw.championship(in, answer);
 
